@@ -1,12 +1,14 @@
+import { TimeoutInterceptor } from '../common/interceptors/timeout.interceptor';
 import { INestApplication, Logger, ValidationPipe } from "@nestjs/common";
 import { SwaggerModule } from "@nestjs/swagger";
 import { swaggerConfig, swaggerDocumentOptions, swaggerSetupOptions } from './swagger.config';
 
 export class BundleApp {
   private readonly app: INestApplication;
-  private readonly logger: Logger;
+  private readonly logger: typeof Logger;
   constructor(app: INestApplication) {
     this.app = app;
+    this.logger = Logger;
     this.prefixOptionsApp();
     this.setSwagger();
     this.listenApp();
@@ -15,6 +17,7 @@ export class BundleApp {
   private prefixOptionsApp() {
     this.app.setGlobalPrefix('v1');
     this.app.useGlobalPipes(new ValidationPipe());
+    this.app.useGlobalInterceptors(new TimeoutInterceptor());
   }
 
   private setSwagger() {
@@ -33,6 +36,6 @@ export class BundleApp {
   private async listenApp() {
     const port = process.env.PORT || 3000;
     await this.app.listen(port);
-    console.log(`Application listening on port ${port}`);
+    this.logger.debug(`Application listening on port ${port}`);
   }
 }

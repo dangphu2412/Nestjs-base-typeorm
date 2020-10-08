@@ -1,24 +1,15 @@
 import * as Racl from '../../../common/enums/racl.enum';
 import {  Permission, Role, Method, Module  } from '../../../common/entity';
-import { flatten } from '@nestjs/common';
-
-interface IPermissionRacl {
-  method: string;
-  module: string;
-}
-interface IRacl {
-  role: string;
-  permissions: Array<IPermissionRacl>
-}
+import { TRacl } from 'src/common/type/t.Racl';
 
 export class RaclHelper {
-  private _racls: Array<IRacl>;
+  private _racls: Array<TRacl>;
 
   constructor() {
     this._racls = this.getRacls();
   }
 
-  private  getRacls(): Array<IRacl> {
+  private  getRacls(): Array<TRacl> {
     return [
       {
         role: Racl.ERole.ADMIN,

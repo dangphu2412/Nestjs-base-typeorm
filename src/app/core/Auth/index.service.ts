@@ -1,7 +1,9 @@
+import { TUserInfo, TJwtPayload } from '../../../common/type';
 import { ConflictException, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { CreateUserDto } from "src/common/dto/User/create.dto";
+import { UpsertUserDto } from "src/common/dto/User/upsert.dto";
 import { User } from "src/common/entity";
+import { IUserLoginResponse } from "src/common/interface/t.jwtPayload";
 import { UserService } from "../User/index.service";
 
 @Injectable()
@@ -10,28 +12,40 @@ export class AuthService {
     private service: UserService,
     private jwtService: JwtService
   ) {}
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.service.findOne(username);
+  async validateUser(username: string, pass: string): Promise<User | null> {
+    const user: User = await this.service.findOne({
+      where: {
+        username
+      }
+    });
     if (user && user.password === pass) {
-      const { password, ...result } = user;
-      return result;
+      return user;
     }
     return null;
   }
 
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
-    return {
+  login(user: User): IUserLoginResponse {
+    const info: TUserInfo = {
+      username: user.username,
+    }
+    const payload: TJwtPayload = {
+      userId: user.id,
+      role: user.role.name,
+      permissions: user.role.permissions
+    }
+    const loginResponse: IUserLoginResponse = {
       access_token: this.jwtService.sign(payload),
-    };
+      info,
+    }
+    return loginResponse;
   }
 
-  async register(user: CreateUserDto): Promise<User> {
+  async register(user: UpsertUserDto): Promise<User> {
     const { username } = user;
-    const isExisted = await this.service.findOne(username);
+    const isExisted = await this.service.findByUsername(username);
 
     if (isExisted) throw new ConflictException('User existed');
 
-    return this.service.createOne(user);
+    return this.service.createOneBase(user);
   }
 }

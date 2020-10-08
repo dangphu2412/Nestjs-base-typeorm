@@ -25,7 +25,7 @@ export class Role extends BaseEntity {
     deletedAt: Date;
 
     // Relations
-    @ManyToMany(() => Permission, permission => permission.roles)
+    @ManyToMany(() => Permission, permission => permission.roles, { eager: true })
     @JoinTable({
         name: 'role_permissions',
         joinColumn: {
