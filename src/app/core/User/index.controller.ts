@@ -1,6 +1,6 @@
 import {ApiTags} from "@nestjs/swagger";
 import {Controller, Patch, Param} from "@nestjs/common";
-import {Crud, CrudController, CrudAuth} from "@nestjsx/crud";
+import {Crud, CrudController} from "@nestjsx/crud";
 import {UpsertUserDto} from "src/common/dto/User/upsert.dto";
 import {User} from "src/common/entity";
 import {UserService} from "./index.service";

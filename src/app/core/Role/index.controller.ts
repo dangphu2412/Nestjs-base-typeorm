@@ -1,5 +1,5 @@
 import {ApiTags} from "@nestjs/swagger";
-import {Controller, Get} from "@nestjs/common";
+import {Controller} from "@nestjs/common";
 import {Crud, CrudController} from "@nestjsx/crud";
 import {Role} from "src/common/entity";
 import {RoleService} from "./index.service";

@@ -1,6 +1,6 @@
 import {Crud} from "@nestjsx/crud";
 import {ApiTags} from "@nestjs/swagger";
-import {Controller, Get} from "@nestjs/common";
+import {Controller} from "@nestjs/common";
 import {PermissionService} from "./index.service";
 import {Permission} from "src/common/entity";
 
