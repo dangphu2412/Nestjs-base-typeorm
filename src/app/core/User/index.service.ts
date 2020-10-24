@@ -1,10 +1,11 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Override } from "@nestjsx/crud";
-import { TypeOrmCrudService } from "@nestjsx/crud-typeorm/lib/typeorm-crud.service";
-import { UpsertUserDto } from "src/common/dto/User/upsert.dto";
-import { User } from "src/common/entity";
-import { UserRepository } from "./index.repository";
+import {ConflictException, Injectable, NotFoundException} from "@nestjs/common";
+import {InjectRepository} from "@nestjs/typeorm";
+import {Override} from "@nestjsx/crud";
+import {TypeOrmCrudService} from "@nestjsx/crud-typeorm/lib/typeorm-crud.service";
+import {UserError} from "src/common/constants";
+import {RegisterDto} from "src/common/dto/User";
+import {User} from "src/common/entity";
+import {UserRepository} from "./index.repository";
 
 @Injectable()
 export class UserService extends TypeOrmCrudService<User> {
@@ -18,17 +19,17 @@ export class UserService extends TypeOrmCrudService<User> {
   findByUsername(username: string): Promise<User> {
     return this.repository.findOne({
       where: {
-        username,
+        username
       }
     })
   }
 
-  @Override('createOneBase')
-  createOneBase(user: UpsertUserDto): Promise<User> {
+  @Override("createOneBase")
+  createOneBase(user: RegisterDto): Promise<User> {
     return this.repository.create(
       {
-        username: user.username,
-        password: user.password,
+        email: user.email,
+        password: user.password
       }
     ).save();
   }
@@ -37,9 +38,11 @@ export class UserService extends TypeOrmCrudService<User> {
     const record = await this.repository.findOne(id, {
       withDeleted: true
     });
-    if (!record) throw new NotFoundException('Not found this user')
-    if (parseInt(id, 10) === currentUser.id) throw new ConflictException('Can not restore yourself');
-    if (record.deletedAt === null) throw new ConflictException('Your record has been restore');
+    if (!record) throw new NotFoundException(UserError.NotFound)
+    if (parseInt(id, 10) === currentUser.id) {
+      throw new ConflictException(UserError.ConflictSelf);
+    }
+    if (record.deletedAt === null) throw new ConflictException(UserError.ConflictRestore);
     await this.repository.restore(record);
   }
 }
