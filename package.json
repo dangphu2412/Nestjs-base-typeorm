@@ -23,7 +23,8 @@
     "migrate:latest": "ts-node ./node_modules/typeorm/cli.js migration:run",
     "migrate:rollback": "ts-node ./node_modules/typeorm/cli.js migration:revert",
     "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
-    "schema:drop": "ts-node ./node_modules/typeorm/cli.js schema:drop"
+    "schema:drop": "ts-node ./node_modules/typeorm/cli.js schema:drop",
+    "schema:sync": "ts-node ./node_modules/typeorm/cli.js schema:sync"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
@@ -37,7 +38,9 @@
     "@nestjsx/crud-typeorm": "^4.6.2",
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
+    "csv-parser": "^2.3.3",
     "lodash": "^4.17.20",
+    "moment": "^2.29.1",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
@@ -45,6 +48,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
+    "slugify": "^1.4.5",
     "swagger-ui-express": "^4.1.4",
     "typeorm": "^0.2.25",
     "typeorm-seeding": "^1.6.1"

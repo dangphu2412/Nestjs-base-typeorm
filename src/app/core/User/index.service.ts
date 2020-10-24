@@ -5,33 +5,45 @@ import {TypeOrmCrudService} from "@nestjsx/crud-typeorm/lib/typeorm-crud.service
 import {UserError} from "src/common/constants";
 import {RegisterDto} from "src/common/dto/User";
 import {User} from "src/common/entity";
+import {ERole} from "src/common/enums";
+import {RoleService} from "../Role/index.service";
 import {UserRepository} from "./index.repository";
 
 @Injectable()
 export class UserService extends TypeOrmCrudService<User> {
   constructor(
     @InjectRepository(User)
-    private repository: UserRepository
+    private repository: UserRepository,
+    private roleService: RoleService
   ) {
     super(repository);
   }
 
-  findByUsername(username: string): Promise<User> {
+  findByEmail(email: string): Promise<User> {
     return this.repository.findOne({
       where: {
-        username
+        email
       }
     })
   }
 
   @Override("createOneBase")
-  createOneBase(user: RegisterDto): Promise<User> {
-    return this.repository.create(
+  async createOneBase(user: RegisterDto): Promise<User> {
+    const internRole = await this.roleService.findOne({
+      where: {
+        name: ERole.INTERN
+      },
+      relations: ["permissions"]
+    });
+    const userResponse = await this.repository.create(
       {
+        fullName: user.fullName,
         email: user.email,
-        password: user.password
+        password: user.password,
+        roles: [internRole]
       }
     ).save();
+    return userResponse;
   }
 
   async restoreUser(id: string, currentUser: User) {

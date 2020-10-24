@@ -30,7 +30,7 @@ define(User, (faker: typeof Faker, context: { role: Role }) => {
   user.bio = bio;
   user.note = note;
   user.status = status;
-  user.role = role;
+  user.roles = [role];
 
   return user;
 });

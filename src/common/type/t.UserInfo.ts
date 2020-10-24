@@ -1,3 +1,4 @@
 export type TUserInfo = {
-  username: string;
+  email: string;
+  fullName: string;
 }

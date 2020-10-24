@@ -9,7 +9,18 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "incremental": true
+    "incremental": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
-  "exclude": ["node_modules", "dist", "src/app/core/example/*"]
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "include": [
+    "src/**/*",
+    "**/test/**/*.ts",
+    "ormconfig.js"
+  ],
 }

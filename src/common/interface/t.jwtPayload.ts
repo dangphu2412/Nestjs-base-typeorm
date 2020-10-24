@@ -3,6 +3,7 @@ export interface IUserInfo {
   fullName: string;
   phone: string;
   avatar: string;
+  roles: string[];
 }
 
 export interface IUserLoginResponse extends IUserInfo {

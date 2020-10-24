@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import {
   Entity, PrimaryGeneratedColumn, Column,
-  ManyToOne, BeforeInsert, BeforeUpdate, Unique
+  BeforeInsert, BeforeUpdate, Unique, ManyToMany
 } from "typeorm";
 import {ApiProperty} from "@nestjs/swagger";
 import {Role} from "./role.entity";
@@ -13,8 +13,8 @@ import {IsMobilePhone, IsOptional, IsString, IsIn, IsDateString, IsBoolean, IsEm
 import {enumToArray} from "../../utils";
 import {Gender, UserStatus} from "../enums";
 
-  @Entity("users")
-  @Unique(["email"])
+@Entity("users")
+@Unique(["email"])
 export class User extends BaseActionDate {
       @ApiProperty({readOnly: true})
       @PrimaryGeneratedColumn()
@@ -44,7 +44,9 @@ export class User extends BaseActionDate {
       })
       @IsOptional()
       @IsMobilePhone("vi-VN")
-      @Column()
+      @Column({
+        nullable: true
+      })
       phone: string;
 
       @ApiProperty({
@@ -62,7 +64,8 @@ export class User extends BaseActionDate {
       @IsIn(enumToArray(Gender))
       @Column({
         type: "enum",
-        enum: Gender
+        enum: Gender,
+        default: Gender.MALE
       })
       gender: string;
 
@@ -71,7 +74,9 @@ export class User extends BaseActionDate {
       })
       @IsRequired()
       @IsDateString()
-      @Column()
+      @Column({
+        nullable: true
+      })
       birthday: Date;
 
       @ApiProperty({
@@ -118,7 +123,7 @@ export class User extends BaseActionDate {
       /**
        * Relations
        */
-      @ManyToOne(() => Role)
-      role: Role
+      @ManyToMany(() => Role, role => role.users)
+      roles: Role[]
 }
 

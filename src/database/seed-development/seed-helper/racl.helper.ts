@@ -4,6 +4,7 @@ import {TRacl} from "../../../common/type/t.Racl";
 import {enumToArray} from "../../../utils/array";
 import {flatMap, remove} from "lodash";
 import {TCrudAction} from "../../../common/type/t.CrudAction";
+import {In} from "typeorm";
 
 export class RaclHelper {
   private _racls: Array<TRacl>;
@@ -25,17 +26,6 @@ export class RaclHelper {
         permissions: flatMap([
           ...this.createManyPermissionFromFeature(ECrudFeature.USER, ["DELETE", "REPLACE"]),
           ...this.createManyPermissionFromFeature(ECrudFeature.ROLE)
-        ])
-      },
-      {
-        role: ERole.SALE,
-        permissions: flatMap([
-          ...this.createManyPermissionFromFeature(ECrudFeature.BILL),
-          ...this.createManyPermissionFromFeature(ECrudFeature.BILL_INFO),
-          ...this.createManyPermissionFromFeature(ECrudFeature.BILL_SERVICE),
-          ...this.createManyPermissionFromFeature(ECrudFeature.CUSTOMER),
-          ...this.createManyPermissionFromFeature(ECrudFeature.PAYMENT),
-          ...this.createManyPermissionFromFeature(ECrudFeature.DESTINATION)
         ])
       },
       {
@@ -86,11 +76,11 @@ export class RaclHelper {
         const roleEntity = roleEntities.find(item => item.name === racl.role);
         const permissionAllow = await Permission.find({
           where: {
-            name: racl.permissions
+            name: racl.permissions.length ? In(racl.permissions) : null
           }
         })
         roleEntity.permissions = permissionAllow;
-        return roleEntity.save();
+        await roleEntity.save();
       })
     );
   }

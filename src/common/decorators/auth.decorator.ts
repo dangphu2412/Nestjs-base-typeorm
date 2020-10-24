@@ -1,13 +1,11 @@
-import {applyDecorators, SetMetadata, UseGuards} from "@nestjs/common";
+import {applyDecorators, UseGuards} from "@nestjs/common";
 import {ApiBearerAuth, ApiUnauthorizedResponse} from "@nestjs/swagger";
 import {JwtAuthGuard} from "../guards/jwt.guard";
-import {RolesGuard} from "../guards/racl.guard";
-import {TRacl} from "../type/t.Racl";
+import {PermissionGuard} from "../guards/racl.guard";
 
-export function GrantAccess(...racls: TRacl[]) {
+export function GrantAccess() {
   return applyDecorators(
-    SetMetadata("racls", racls),
-    UseGuards(JwtAuthGuard, RolesGuard),
+    UseGuards(JwtAuthGuard, PermissionGuard),
     ApiBearerAuth(),
     ApiUnauthorizedResponse({description: "Unauthorized"}),
   );

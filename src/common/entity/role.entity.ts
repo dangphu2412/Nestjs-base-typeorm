@@ -1,6 +1,6 @@
 import {
   Entity, PrimaryGeneratedColumn, Column,
-  ManyToMany, OneToMany, JoinTable
+  ManyToMany, JoinTable
 } from "typeorm";
 import {ApiProperty} from "@nestjs/swagger";
 import {Permission} from "./permission.entity";
@@ -19,7 +19,7 @@ export class Role extends BaseActionDate {
     name: string;
 
     // Relations
-    @ManyToMany(() => Permission, permission => permission.roles, {eager: true})
+    @ManyToMany(() => Permission, permission => permission.roles)
     @JoinTable({
       name: "role_permissions",
       joinColumn: {
@@ -33,6 +33,17 @@ export class Role extends BaseActionDate {
     })
     permissions: Permission[]
 
-    @OneToMany(() => User, user => user.role)
+    @ManyToMany(() => User, user => user.roles)
+    @JoinTable({
+      name: "user_roles",
+      joinColumn: {
+        name: "roleId",
+        referencedColumnName: "id"
+      },
+      inverseJoinColumn: {
+        name: "userId",
+        referencedColumnName: "id"
+      }
+    })
     users: User[]
 }

@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import {ERole, UserStatus} from "../../../common/enums";
+import {ERole, Gender, UserStatus} from "../../../common/enums";
 import {Role, User} from "../../../common/entity";
 
 export class UserHepler {
@@ -18,12 +18,12 @@ export class UserHepler {
         phone: "0327571918",
         avatar:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRlUbAyS_643dq_B69jZAlPNW6_Xc7SLELY6SpRsc5OI2wHiiYG&usqp=CAU",
-        gender: "MALE",
+        gender: Gender.FEMALE,
         birthday: "2011-10-05T14:48:00.000Z",
         bio: "I'm admin",
         note: "Nothing",
         status: UserStatus.ACTIVE,
-        role: role.find(item => item.name === ERole.ADMIN)
+        roles: [role.find(item => item.name === ERole.ADMIN)]
       }),
       User.create({
         fullName: "Operator",
@@ -32,12 +32,12 @@ export class UserHepler {
         phone: "0327571919",
         avatar:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRlUbAyS_643dq_B69jZAlPNW6_Xc7SLELY6SpRsc5OI2wHiiYG&usqp=CAU",
-        gender: "MALE",
+        gender: Gender.MALE,
         birthday: "2011-10-05T14:48:00.000Z",
         bio: "I'm operator",
         note: "Nothing",
         status: UserStatus.ACTIVE,
-        role: role.find(item => item.name === ERole.OPERATOR)
+        roles: [role.find(item => item.name === ERole.OPERATOR)]
       }),
       User.create({
         fullName: "Sale",
@@ -46,12 +46,12 @@ export class UserHepler {
         phone: "0327571920",
         avatar:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRlUbAyS_643dq_B69jZAlPNW6_Xc7SLELY6SpRsc5OI2wHiiYG&usqp=CAU",
-        gender: "FEMALE",
+        gender: Gender.FEMALE,
         birthday: "2011-10-05T14:48:00.000Z",
         bio: "I'm sale",
         note: "Nothing",
         status: UserStatus.ACTIVE,
-        role: role.find(item => item.name === ERole.SALE)
+        roles: [role.find(item => item.name === ERole.SALE)]
       }),
       User.create({
         fullName: "Intern",
@@ -60,12 +60,12 @@ export class UserHepler {
         phone: "0327571921",
         avatar:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRlUbAyS_643dq_B69jZAlPNW6_Xc7SLELY6SpRsc5OI2wHiiYG&usqp=CAU",
-        gender: "MALE",
+        gender: Gender.FEMALE,
         birthday: "2011-10-05T14:48:00.000Z",
         bio: "I'm intern",
         note: "Nothing",
         status: UserStatus.ACTIVE,
-        role: role.find(item => item.name === ERole.INTERN)
+        roles: [role.find(item => item.name === ERole.INTERN)]
       })
     ]
   }
