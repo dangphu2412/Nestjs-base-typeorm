@@ -4,9 +4,9 @@ import {Role, User} from "src/common/entity";
 import {UserService} from "../User/index.service";
 import {BcryptService} from "src/global/bcrypt";
 import {RegisterDto} from "src/common/dto/User";
-import {UserError} from "src/common/constants";
 import {LoginDto} from "src/common/dto/User/login.dto";
 import {IJwtPayload, IUserInfo, IUserLoginResponse} from "src/common/interface/i.user";
+import {genError} from "src/utils/error";
 
 @Injectable()
 export class AuthService {
@@ -43,7 +43,9 @@ export class AuthService {
   async validateUser(email: string, pass: string): Promise<User | null> {
     const user: User = await this.service.findByEmail(email);
     if (!user || BcryptService.compare(pass, user.password)) {
-      throw new UnauthorizedException()
+      throw new UnauthorizedException(
+        "Your password or email is not valid"
+      )
     }
     return user;
   }
@@ -58,7 +60,9 @@ export class AuthService {
     const isExisted = await this.service.findByEmail(email);
 
     if (isExisted) {
-      throw new ConflictException(UserError.ConflictExisted);
+      throw new ConflictException(
+        genError("EXISTED", "Email")
+      );
     }
 
     const user = await this.service.register(dto);

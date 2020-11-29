@@ -1,6 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
-import {TypeOrmCrudService} from "@nestjsx/crud-typeorm/lib/typeorm-crud.service";
+import {BaseService} from "src/app/concept/service";
 import {RegisterDto} from "src/common/dto/User";
 import {User} from "src/common/entity";
 import {ERole} from "src/common/enums";
@@ -9,10 +9,10 @@ import {RoleService} from "../Role/index.service";
 import {UserRepository} from "./index.repository";
 
 @Injectable()
-export class UserService extends TypeOrmCrudService<User> {
+export class UserService extends BaseService<User> {
   constructor(
     @InjectRepository(User)
-    private repository: UserRepository,
+    public repository: UserRepository,
     private roleService: RoleService
   ) {
     super(repository);

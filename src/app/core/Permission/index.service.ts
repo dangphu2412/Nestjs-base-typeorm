@@ -1,14 +1,14 @@
 import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
-import {TypeOrmCrudService} from "@nestjsx/crud-typeorm";
+import {BaseService} from "src/app/concept/service";
 import {Permission} from "src/common/entity";
 import {PermissionRepository} from "./index.repository";
 
 @Injectable()
-export class PermissionService extends TypeOrmCrudService<Permission>{
+export class PermissionService extends BaseService<Permission>{
   constructor(
     @InjectRepository(Permission)
-    private repository: PermissionRepository
+    public repository: PermissionRepository
   ) {
     super(repository);
   }
