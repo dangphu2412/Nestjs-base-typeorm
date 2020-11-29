@@ -29,22 +29,22 @@
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "indent": [
-      "warn",
+      "error",
       2,
       {
         "SwitchCase": 1
       }
     ],
     "eol-last": [
-      "warn",
+      "error",
       "always"
     ],
     "lines-between-class-members": [
-      "warn",
+      "error",
       "always"
     ],
     "comma-dangle": [
-      "warn",
+      "error",
       "never"
     ],
     "@typescript-eslint/quotes": [
@@ -76,7 +76,10 @@
         "ignoreRegExpLiterals": true
       }
     ],
-    "arrow-parens": ["error", "as-needed"],
+    "arrow-parens": [
+      "error",
+      "as-needed"
+    ],
     "no-console": "error"
   }
 }

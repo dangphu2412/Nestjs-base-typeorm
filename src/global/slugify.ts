@@ -1,8 +1,7 @@
 import moment from "moment";
 import slug from "slugify";
 import {Logger} from "@nestjs/common";
-import {ISlug} from "src/common/interface/i.slug";
-import {TSlugColumnOptions} from "src/common/type/t.colSlug";
+import {ISlug, ISlugColumnOptions} from "src/common/interface/i.slug";
 import {each, has} from "lodash";
 
 class Helper implements ISlug {
@@ -25,7 +24,7 @@ class Helper implements ISlug {
    * @param sourceObject Source object to be changed
    * @param columns columns with options change
    */
-  public slugifyColumns<T>(sourceObject: T, columns: Array<TSlugColumnOptions>): void {
+  public slugifyColumns<T>(sourceObject: T, columns: Array<ISlugColumnOptions>): void {
     each(columns, value => {
       const {name, value: currentSlug} = value;
       if (!has(sourceObject, name)) {

@@ -2,7 +2,7 @@ import {Body, Controller, Post} from "@nestjs/common";
 import {ApiBody, ApiTags} from "@nestjs/swagger";
 import {LoginDto} from "src/common/dto/User/login.dto";
 import {RegisterDto} from "src/common/dto/User/register.dto";
-import {IUserLoginResponse} from "src/common/interface/t.jwtPayload";
+import {IUserLoginResponse} from "src/common/interface/i.user";
 import {AuthService} from "./index.service";
 
 @ApiTags("Auth")

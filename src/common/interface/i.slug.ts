@@ -1,4 +1,8 @@
-import {TSlugColumnOptions} from "../type/t.colSlug";
+
+export interface ISlugColumnOptions {
+  name: string;
+  value: string;
+}
 
 export interface ISlug {
   slugify(data: string): string
@@ -7,5 +11,5 @@ export interface ISlug {
 
   slugifyUpperCaseAndRemoveDash(data: string): string;
 
-  slugifyColumns<T>(sourceObject: T, columns: Array<TSlugColumnOptions>): void;
+  slugifyColumns<T>(sourceObject: T, columns: Array<ISlugColumnOptions>): void;
 }

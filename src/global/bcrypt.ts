@@ -2,17 +2,17 @@ import {
   hashSync,
   compareSync
 } from "bcrypt";
-import {bcryptConfig} from "../config";
+import {SALT_ROUNDS} from "../env";
 
 class Service {
-  private saltRound: number;
+  private saltRounds: number;
 
   constructor(config: number) {
-    this.saltRound = config;
+    this.saltRounds = config;
   }
 
   hash(data: string): string {
-    return hashSync(data, this.saltRound);
+    return hashSync(data, this.saltRounds);
   }
 
   compare(data: string, ecrypted: string): boolean {
@@ -20,4 +20,4 @@ class Service {
   }
 }
 
-export const BcryptService = new Service(bcryptConfig);
+export const BcryptService = new Service(SALT_ROUNDS);

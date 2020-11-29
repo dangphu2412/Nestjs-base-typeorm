@@ -2,7 +2,7 @@ import {Injectable, CanActivate, ExecutionContext} from "@nestjs/common";
 import {Reflector} from "@nestjs/core";
 import {getFeature, getAction} from "@nestjsx/crud";
 import {RaclHelper} from "src/database/seed-development/seed-helper/racl.helper";
-import {TJwtPayload} from "../type";
+import {Role, User} from "../entity";
 
 @Injectable()
 export class PermissionGuard implements CanActivate {
@@ -12,26 +12,30 @@ export class PermissionGuard implements CanActivate {
 
   public canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
-    const user: TJwtPayload = request.user;
-    const {permissions} = user;
+    const user: User = request.user;
+    const roles = user.roles;
+
     const handler = context.getHandler();
     const controller = context.getClass();
 
     const feature = getFeature(controller);
     const action = getAction(handler);
     const requiredPermission: string = (new RaclHelper()).createPermission(feature, action);
-    return this.isPermissionAllowed(requiredPermission, permissions);
+
+    this.assignUserToRequest(request, user);
+    return this.isPermissionAllowed(requiredPermission, roles);
   }
 
   private isPermissionAllowed(
-    requiredPermission: string, currentPermissions: string[]
+    requiredPermission: string, roles: Role[]
   ): boolean {
-    const isSuperAdmin = currentPermissions
-      .some(currPermission => currPermission === "ALL");
-    if (isSuperAdmin) {
-      return true;
-    }
-    return currentPermissions
-      .some(currentPermission => currentPermission === requiredPermission);
+    return roles.some(role => {
+      return role.permissions
+        .some(permission => permission.name === "ALL" || permission.name === requiredPermission);
+    })
+  }
+
+  private assignUserToRequest(request: any, user: User): void {
+    request.user = user;
   }
 }
